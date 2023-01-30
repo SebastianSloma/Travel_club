@@ -1,0 +1,31 @@
+{% extends 'travel/base.html' %} 
+
+{% block content %}
+<h1>Travels List</h1>
+<hr>
+
+    {% for travel in travel_list %} 
+    <div class="card">
+        <div class="card-header">
+            <strong>{{ travel }}</strong>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Venue: {{ travel.venue }}</h5>
+          <p class="card-text">
+            <ul>
+                <li>Date: {{ travel.travel_date }} </li>
+                <li>Venue Website: {{ travel.venue.web }} </li>
+                <li>Manager: {{ travel.manager }} </li>
+                <li>Description {{ travel.description }} </li>
+                <li>Attendees: 
+                {% for user in travel.attendees.all %}
+                {{ user }}
+                {% endfor %}
+            </li>
+            </ul>
+          </p>
+        </div>
+      </div>
+      <br>
+    {% endfor %} 
+{% endblock %}

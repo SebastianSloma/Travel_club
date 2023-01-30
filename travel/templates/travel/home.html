@@ -1,0 +1,12 @@
+{% extends 'travel/base.html' %}
+
+{% block content %}
+    <h1>heloo {{ name }}</h1>
+    {{ cal|safe }}
+
+    <br><br><br>
+    copyright (c) {{ current_year }}
+    <br><br><br>
+    {{ time }}
+
+{% endblock %}
