@@ -10,14 +10,20 @@ from django.http import HttpResponseRedirect
 
 
 
-# Delete an event function
+# Delete a Venue function
+
+def delete_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    venue.delete()
+    return redirect('list-venues')
+
+
+# Delete an travel function
 
 def delete_travel(request, travel_id):
     travel = Travel.objects.get(pk=travel_id)
     travel.delete()
     return redirect('list-travels')
-
-
 
 
 def add_travel(request):
@@ -75,7 +81,7 @@ def show_venue(request, venue_id):
 
 
 def list_venues(request):
-    venue_list = Venue.objects.all()
+    venue_list = Venue.objects.all().order_by('name')
     return render(request, 'travel/venue.html',
         {'venue_list': venue_list})
 
@@ -98,7 +104,7 @@ def add_venue(request):
 
 
 def all_travels(request):
-    travel_list = Travel.objects.all()
+    travel_list = Travel.objects.all().order_by('travel_date')
     return render(request, 'travel/travel_list.html', {
         'travel_list': travel_list
     })

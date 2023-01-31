@@ -15,4 +15,5 @@ path('', views.home, name='home'),
     path('add_travel', views.add_travel, name='add-travel'),
     path('update_travel/<travel_id>', views.update_travel, name='update-travel'),
     path('delete_travel/<travel_id>', views.delete_travel, name='delete-travel'),
+    path('delete_venue/<venue_id>', views.delete_venue, name='delete-venue'),
 ]
