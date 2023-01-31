@@ -6,27 +6,47 @@ from .models import Travel, Venue
 from .forms import VenueForm, TravelForm
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+import csv
 
 # Create your views here.
 
-# Generete venue list text file
+# Generate CSV File Venue List
+def venue_csv(request):
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=venues.csv'
+	
+	# Create a csv writer
+	writer = csv.writer(response)
+
+	# Designate The Model
+	venues = Venue.objects.all()
+
+	# Add column headings to the csv file
+	writer.writerow(['Venue Name', 'Address', 'Zip Code', 'Phone', 'Web Address', 'Email'])
+
+	# Loop Thu and output
+	for venue in venues:
+		writer.writerow([venue.name, venue.address, venue.zip_code, venue.phone, venue.web, venue.email_address])
+
+	return response
+
+# Generate Text File Venue List
 def venue_text(request):
-    response = HttpResponse(content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename=venues.txt'
+	response = HttpResponse(content_type='text/plain')
+	response['Content-Disposition'] = 'attachment; filename=venues.txt'
+	# Designate The Model
+	venues = Venue.objects.all()
 
+	# Create blank list
+	lines = []
+	# Loop Thu and output
+	for venue in venues:
+		lines.append(f'{venue.name}\n{venue.address}\n{venue.zip_code}\n{venue.phone}\n{venue.web}\n{venue.email_address}\n\n\n')
 
-    # designate the model
-    venues= Venue.objects.all()
-# create blank list
-    lines = []
-    # loop tru and output
-    for venue in venues:
-        lines.append(f'{venue.name}\n{venue.address}\n{venue.zip_code}\n{venue.phone}\n{venue.web}\n{venue.email_address}\n\n\n')
+	# Write To TextFile
+	response.writelines(lines)
+	return response
 
-
-    # write to txt file
-    response.writelines(lines)
-    return response
 
 
 # Delete a Venue function

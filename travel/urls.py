@@ -17,4 +17,5 @@ path('', views.home, name='home'),
     path('delete_travel/<travel_id>', views.delete_travel, name='delete-travel'),
     path('delete_venue/<venue_id>', views.delete_venue, name='delete-venue'),
     path('venue_text', views.venue_text, name='venue_text'),
+    path('venue_csv', views.venue_csv, name='venue_csv'),
 ]
