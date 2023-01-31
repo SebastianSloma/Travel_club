@@ -10,6 +10,16 @@ from django.http import HttpResponseRedirect
 
 
 
+# Delete an event function
+
+def delete_travel(request, travel_id):
+    travel = Travel.objects.get(pk=travel_id)
+    travel.delete()
+    return redirect('list-travels')
+
+
+
+
 def add_travel(request):
     submitted = False
     if request.method == 'POST':
