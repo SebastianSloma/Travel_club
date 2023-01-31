@@ -3,10 +3,25 @@ import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Travel, Venue
-from .forms import VenueForm
+from .forms import VenueForm, TravelForm
 from django.http import HttpResponseRedirect
 
 # Create your views here.
+
+def add_travel(request):
+    submitted = False
+    if request.method == 'POST':
+        form = TravelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/add_travel?submitted=True')
+    else:
+        form = TravelForm
+        if 'submitted' in request.GET:
+            submitted = True
+
+    return render(request, 'travel/add_travel.html', {'form':form, 'submitted':submitted})
+
 
 def update_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
