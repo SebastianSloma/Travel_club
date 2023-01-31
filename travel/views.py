@@ -8,6 +8,8 @@ from django.http import HttpResponseRedirect
 
 # Create your views here.
 
+
+
 def add_travel(request):
     submitted = False
     if request.method == 'POST':
@@ -21,6 +23,15 @@ def add_travel(request):
             submitted = True
 
     return render(request, 'travel/add_travel.html', {'form':form, 'submitted':submitted})
+
+def update_travel(request, travel_id):
+    travel = Travel.objects.get(pk=travel_id)
+    form = TravelForm(request.POST or None, instance=travel)
+    if form.is_valid():
+        form.save()
+        return redirect('list-travels')
+
+    return render(request, 'travel/update_travel.html', {'travel':travel, 'form':form})
 
 
 def update_venue(request, venue_id):
