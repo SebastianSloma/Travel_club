@@ -1,0 +1,17 @@
+{% extends 'travel/base.html' %}
+
+{% block content %}
+    
+{% if searched %}
+<h1>You Seached For {{ searched }}</h1>
+{% for venue in venues %}
+   <a href="{% url 'show-venue' venue.id %}">{{ venue }}</a> <br>
+{% endfor %}
+{% else %}
+<h1>Hey! You Forgot To Search For A Venue...</h1>
+{% endif %}
+    
+
+   
+
+{% endblock %}

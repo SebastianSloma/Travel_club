@@ -9,5 +9,6 @@ path('', views.home, name='home'),
     path('travels', views.all_travels, name='list-travels'),
     path('add_venue', views.add_venue, name='add-venue'),
     path('list_venues', views.list_venues, name='list-venues'),
-    path('show_venue/<venue_id>', views.show_venue, name='show-venue')
+    path('show_venue/<venue_id>', views.show_venue, name='show-venue'),
+    path('search_venues', views.search_venues, name='search-venues'),
 ]
