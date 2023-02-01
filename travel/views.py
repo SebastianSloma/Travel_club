@@ -7,8 +7,54 @@ from .forms import VenueForm, TravelForm
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 import csv
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+# import pagination stuff
+from django.core.paginator import Paginator
 
 # Create your views here.
+
+# Generate PDF File Venue List
+def venue_pdf(request):
+    # Create bytestream buffer
+    buf = io.BytesIO()
+    # Create a canvas
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0 )
+    # Create a text object
+    textobj=c.beginText()
+    textobj.setTextOrigin(inch,inch)
+    textobj.setFont('Helvetica', 14)
+
+    # Designate the model
+    venues = Venue.objects.all()
+
+    # Create blank list
+    lines = []
+
+    for venue in venues:
+        lines.append(venue.name)
+        lines.append(venue.address)
+        lines.append(venue.zip_code)
+        lines.append(venue.phone)
+        lines.append(venue.web)
+        lines.append(venue.email_address)
+        lines.append('.')
+
+
+    # loop
+    for line in lines:
+        textobj.textLine(line)
+    
+    # finish up
+    c.drawText(textobj)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+
+    return FileResponse(buf, as_attachment=True, filename='venue.pdf')
 
 # Generate CSV File Venue List
 def venue_csv(request):
