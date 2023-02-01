@@ -9,6 +9,7 @@ from .models import Travel
 admin.site.register(TravelUser)
 # admin.site.register(Travel)
 
+
 @admin.register(Venue)
 class VenueAdmin(admin.ModelAdmin):
     list_display = ('name', 'address', 'phone')

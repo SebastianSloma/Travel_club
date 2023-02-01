@@ -20,3 +20,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('travel.urls')),
 ]
+
+# Configure admin titles
+admin.site.site_header = 'Travel Club Administration Page'
+admin.site.site_title = 'Browser Title'
+admin.site.index_title = 'Welcome To The Admin Area...'
