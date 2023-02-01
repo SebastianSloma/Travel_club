@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
@@ -18,14 +18,16 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 # Generate PDF File Venue List
+
+
 def venue_pdf(request):
     # Create bytestream buffer
     buf = io.BytesIO()
     # Create a canvas
-    c = canvas.Canvas(buf, pagesize=letter, bottomup=0 )
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
     # Create a text object
-    textobj=c.beginText()
-    textobj.setTextOrigin(inch,inch)
+    textobj = c.beginText()
+    textobj.setTextOrigin(inch, inch)
     textobj.setFont('Helvetica', 14)
 
     # Designate the model
@@ -43,11 +45,10 @@ def venue_pdf(request):
         lines.append(venue.email_address)
         lines.append('.')
 
-
     # loop
     for line in lines:
         textobj.textLine(line)
-    
+
     # finish up
     c.drawText(textobj)
     c.showPage()
@@ -57,42 +58,48 @@ def venue_pdf(request):
     return FileResponse(buf, as_attachment=True, filename='venue.pdf')
 
 # Generate CSV File Venue List
+
+
 def venue_csv(request):
-	response = HttpResponse(content_type='text/csv')
-	response['Content-Disposition'] = 'attachment; filename=venues.csv'
-	
-	# Create a csv writer
-	writer = csv.writer(response)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=venues.csv'
 
-	# Designate The Model
-	venues = Venue.objects.all()
+    # Create a csv writer
+    writer = csv.writer(response)
 
-	# Add column headings to the csv file
-	writer.writerow(['Venue Name', 'Address', 'Zip Code', 'Phone', 'Web Address', 'Email'])
+    # Designate The Model
+    venues = Venue.objects.all()
 
-	# Loop Thu and output
-	for venue in venues:
-		writer.writerow([venue.name, venue.address, venue.zip_code, venue.phone, venue.web, venue.email_address])
+    # Add column headings to the csv file
+    writer.writerow(['Venue Name', 'Address', 'Zip Code',
+                    'Phone', 'Web Address', 'Email'])
 
-	return response
+    # Loop Thu and output
+    for venue in venues:
+        writer.writerow([venue.name, venue.address, venue.zip_code,
+                        venue.phone, venue.web, venue.email_address])
+
+    return response
 
 # Generate Text File Venue List
+
+
 def venue_text(request):
-	response = HttpResponse(content_type='text/plain')
-	response['Content-Disposition'] = 'attachment; filename=venues.txt'
-	# Designate The Model
-	venues = Venue.objects.all()
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=venues.txt'
+    # Designate The Model
+    venues = Venue.objects.all()
 
-	# Create blank list
-	lines = []
-	# Loop Thu and output
-	for venue in venues:
-		lines.append(f'{venue.name}\n{venue.address}\n{venue.zip_code}\n{venue.phone}\n{venue.web}\n{venue.email_address}\n\n\n')
+    # Create blank list
+    lines = []
+    # Loop Thu and output
+    for venue in venues:
+        lines.append(
+            f'{venue.name}\n{venue.address}\n{venue.zip_code}\n{venue.phone}\n{venue.web}\n{venue.email_address}\n\n\n')
 
-	# Write To TextFile
-	response.writelines(lines)
-	return response
-
+    # Write To TextFile
+    response.writelines(lines)
+    return response
 
 
 # Delete a Venue function
@@ -123,7 +130,8 @@ def add_travel(request):
         if 'submitted' in request.GET:
             submitted = True
 
-    return render(request, 'travel/add_travel.html', {'form':form, 'submitted':submitted})
+    return render(request, 'travel/add_travel.html', {'form': form, 'submitted': submitted})
+
 
 def update_travel(request, travel_id):
     travel = Travel.objects.get(pk=travel_id)
@@ -132,7 +140,7 @@ def update_travel(request, travel_id):
         form.save()
         return redirect('list-travels')
 
-    return render(request, 'travel/update_travel.html', {'travel':travel, 'form':form})
+    return render(request, 'travel/update_travel.html', {'travel': travel, 'form': form})
 
 
 def update_venue(request, venue_id):
@@ -142,34 +150,36 @@ def update_venue(request, venue_id):
         form.save()
         return redirect('list-venues')
 
-    return render(request, 'travel/update_venue.html', {'venue':venue, 'form':form})
-
+    return render(request, 'travel/update_venue.html', {'venue': venue, 'form': form})
 
 
 def search_venues(request):
-    if request.method =='POST':
+    if request.method == 'POST':
         searched = request.POST['searched']
         venues = Venue.objects.filter(name__contains=searched)
 
         return render(request, 'travel/search_venues.html',
-        {'searched':searched, 'venues':venues})
+                      {'searched': searched, 'venues': venues})
     else:
         return render(request, 'travel/search_venues.html',
-        {})
-
+                      {})
 
 
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    return render(request, 'travel/show_venue.html',{'venue':venue})
-
+    return render(request, 'travel/show_venue.html', {'venue': venue})
 
 
 def list_venues(request):
-    venue_list = Venue.objects.all().order_by('name')
-    return render(request, 'travel/venue.html',
-        {'venue_list': venue_list})
+    # venue_list = Venue.objects.all().order_by('name')
+    venue_list = Venue.objects.all()
 
+    # Set up Pagination
+    p = Paginator(Venue.objects.all(), 10)
+    page = request.GET.get('page')
+    venues = p.get_page(page)
+
+    return render(request, 'travel/venue.html', {'venue_list': venue_list, 'venues': venues})
 
 
 def add_venue(request):
@@ -180,12 +190,12 @@ def add_venue(request):
             form.save()
             return HttpResponseRedirect('/add_venue?submitted=True')
     else:
-        form=VenueForm
+        form = VenueForm
         if 'submitted' in request.GET:
             submitted = True
 
     form = VenueForm
-    return render(request, 'travel/add_venue.html', {'form':form, 'submitted':submitted})
+    return render(request, 'travel/add_venue.html', {'form': form, 'submitted': submitted})
 
 
 def all_travels(request):
