@@ -19,9 +19,9 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'list-travels' %}">All Travels</a></li>
+              {% if user.is_authenticated %}
               <li><a class="dropdown-item" href="{% url 'add-travel' %}">Add Travel</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              {% endif %}
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -30,8 +30,9 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'list-venues' %}">All Venues</a></li>
-              <li><a class="dropdown-item" href="{% url 'add-venue' %}">Venues</a></li>
-             
+              {% if user.is_authenticated %}
+              <li><a class="dropdown-item" href="{% url 'add-venue' %}">Add Venues</a></li>
+              {% endif %}
             </ul>
           </li>
           <li class="nav-item dropdown">
