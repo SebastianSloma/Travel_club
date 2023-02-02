@@ -21,12 +21,7 @@
 </tr>
 {% endfor %}
 </table>
-<!-- <br><br>
-{{ venues }} <br>
-Has Previous: {{ venues.has_previous }} <br>
-Has Next: {{ venues.has_next }} <br>
-Current Page: {{ venues.number }} <br>
-Number of Pages: {{ venues.paginator.num_pages }} <br> -->
+
 <br><br><hr>
 
 <nav aria-label="Page navigation example">
@@ -41,9 +36,6 @@ Number of Pages: {{ venues.paginator.num_pages }} <br> -->
       
   {% endif %}
   
-  <!--
-  <li class="page-item disabled"><a href="#" class="page-link">Page {{ venues.number }} of {{ venues.paginator.num_pages }}</a></li>
-  -->
   
   {% for i in nums %}
       <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>

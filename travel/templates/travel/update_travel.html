@@ -1,21 +1,30 @@
-{% extends 'travel/base.html' %}
+{% extends 'travel/base.html' %} 
+{% block content %} 
 
-{% block content %}
-{% if user.is_authenticated %}
-    <h1>Update Venue...</h1>
-    <br>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <br>
-        <input type="submit" value="Update" class="btn btn-secondary">
-    </form>
+{% if user.is_authenticated %} 
+    {% if user == travel.manager %}
+<h1>Update Travel...</h1>
+<br>
+<form action="" method="POST">
+	{% csrf_token %} 
+    {{ form.as_p }}
+	<br />
+	<input type="submit" value="Update" class="btn btn-secondary" />
+</form>
 
     {% else %}
-    <h1>Sorry! You Must Be Logged In To View This Page...</h1>
-    
-    <a href="{% url 'login' %}">Login Here</a>
-    
-     {% endif %} 
+<h2>Access Denided</h2>
+<p>Only the travel's Manager can update this event...</p>
+Logged In User : {{ user }}
+<br />
+Travel Manager: {{ travel.manager }}
+<br /><br />
+{% endif %}
 
+{% else %}
+<h1>Sorry! You Must Be Logged In To View This Page...</h1>
+
+<a href="{% url 'login' %}">Login Here</a>
+
+{% endif %} 
 {% endblock %}
