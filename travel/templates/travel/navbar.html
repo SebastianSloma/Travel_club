@@ -10,19 +10,39 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' '2023' 'February' %}">February</a>
+            <a class="nav-link" href="{% url 'home' %}">Calendar</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'list-travels' %}">Travels</a>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Travels
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'list-travels' %}">All Travels</a></li>
+              <li><a class="dropdown-item" href="{% url 'add-travel' %}">Add Travel</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'add-travel' %}">Add Travel</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Venues
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'list-venues' %}">All Venues</a></li>
+              <li><a class="dropdown-item" href="{% url 'add-venue' %}">Venues</a></li>
+             
+            </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'add-venue' %}">Add Venue</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'list-venues' %}">Venues</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Downloads
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'venue_text' %}">Venue Text File</a></li>
+              <li><a class="dropdown-item" href="{% url 'venue_csv' %}">Venue CSV File</a></li>
+              <li><a class="dropdown-item" href="{% url 'venue_pdf' %}">Venue PDF File</a></li>
+            </ul>
           </li>
           {% if user.is_authenticated %}
           <li class="nav-item">
@@ -33,21 +53,8 @@
             <a class="nav-link" href="{% url 'login' %}">Login</a>
           </li>
           {% endif %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Download
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'venue_text' %}">Venue Text File</a></li>
-              <li><a class="dropdown-item" href="{% url 'venue_csv' %}">Venue CSV File</a></li>
-              <li><a class="dropdown-item" href="{% url 'venue_pdf' %}">Venue PDF File</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
-          </li>
+          
+       
         </ul>
         <form class="d-flex" role="search" method=POST action="{% url 'search-venues' %}">
           {% csrf_token %}
