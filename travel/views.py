@@ -3,6 +3,8 @@ import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Travel, Venue
+
+from django.contrib.auth.models import User
 from .forms import VenueForm, TravelForm, TravelFormAdmin
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
@@ -120,7 +122,8 @@ def delete_travel(request, travel_id):
         messages.success(request, ('Travel Deleted!'))
         return redirect('list-travels')
     else:
-        messages.success(request, ('You Are Not Authorized To Delete This Travel!'))
+        messages.success(
+            request, ('You Are Not Authorized To Delete This Travel!'))
         return redirect('list-travels')
 
 
@@ -189,7 +192,8 @@ def search_venues(request):
 
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    return render(request, 'travel/show_venue.html', {'venue': venue})
+    venue_owner = User.objects.get(pk=venue.owner)
+    return render(request, 'travel/show_venue.html', {'venue': venue, 'venue_owner': venue_owner})
 
 
 def list_venues(request):
