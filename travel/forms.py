@@ -3,7 +3,30 @@ from django.forms import ModelForm
 from .models import Venue, Travel
 
 
-# Create Travel Form
+# Admin super user form
+
+class TravelFormAdmin(ModelForm):
+	class Meta:
+		model = Travel
+		fields = ('name', 'travel_date', 'venue', 'manager', 'attendees', 'description')
+		labels = {
+			'name': '',
+			'travel_date': 'YYYY-MM-DD HH:MM:SS',
+			'venue': 'Venue',
+			'manager': 'Manager',
+			'attendees': 'Attendees',
+			'description': '',			
+		}
+		widgets = {
+			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Travel Name'}),
+			'travel_date': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Travel Date'}),
+			'venue': forms.Select(attrs={'class':'form-select', 'placeholder':'Venue'}),
+			'manager': forms.Select(attrs={'class':'form-select', 'placeholder':'Manager'}),
+			'attendees': forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'Attendees'}),
+			'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Description'}),
+		}
+
+# User travel form
 
 class TravelForm(ModelForm):
 	class Meta:
@@ -23,6 +46,7 @@ class TravelForm(ModelForm):
 			'attendees': forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'Attendees'}),
 			'description': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Description'}),
 		}
+
 
 
 # Create Venue form

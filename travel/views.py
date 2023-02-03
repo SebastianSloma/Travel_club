@@ -3,7 +3,7 @@ import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Travel, Venue
-from .forms import VenueForm, TravelForm
+from .forms import VenueForm, TravelForm, TravelFormAdmin
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 import csv
@@ -121,12 +121,24 @@ def delete_travel(request, travel_id):
 def add_travel(request):
     submitted = False
     if request.method == 'POST':
-        form = TravelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/add_travel?submitted=True')
+        if request.user.is_superuser:
+            form = TravelFormAdmin(request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/add_travel?submitted=True')
+        else:
+            form = TravelForm(request.POST)
+            if form.is_valid():
+                travel = form.save(commit=False)
+                travel.manager = request.user
+                travel.save()
+                return HttpResponseRedirect('/add_travel?submitted=True')
     else:
-        form = TravelForm
+        # go to page, not submit
+        if request.user.is_superuser:
+            form = TravelFormAdmin
+        else:
+            form = TravelForm
         if 'submitted' in request.GET:
             submitted = True
 
@@ -135,7 +147,11 @@ def add_travel(request):
 
 def update_travel(request, travel_id):
     travel = Travel.objects.get(pk=travel_id)
-    form = TravelForm(request.POST or None, instance=travel)
+    if request.user.is_superuser:
+        form = TravelFormAdmin(request.POST or None, instance=travel)
+    else:
+        form = TravelForm(request.POST or None, instance=travel)
+        
     if form.is_valid():
         form.save()
         return redirect('list-travels')
