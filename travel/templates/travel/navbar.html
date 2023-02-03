@@ -22,6 +22,7 @@
               {% if user.is_authenticated %}
               <li><a class="dropdown-item" href="{% url 'add-travel' %}">Add Travel</a></li>
               <li><a class="dropdown-item" href="{% url 'my_travels' %}">My Travels</a></li>
+              <li><a class="dropdown-item" href="{% url 'search_travels' %}">Search Travels</a></li>
               {% endif %}
             </ul>
           </li>

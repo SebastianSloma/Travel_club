@@ -20,4 +20,5 @@ path('', views.home, name='home'),
     path('venue_csv', views.venue_csv, name='venue_csv'),
     path('venue_pdf', views.venue_pdf, name='venue_pdf'),
     path('my_travels', views.my_travels, name='my_travels'),
+    path('search_travels', views.search_travels, name='search_travels'),
 ]

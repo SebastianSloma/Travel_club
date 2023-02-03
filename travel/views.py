@@ -199,6 +199,18 @@ def search_venues(request):
         return render(request, 'travel/search_venues.html',
                       {})
 
+def search_travels(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        travels = Travel.objects.filter(name__contains=searched)
+
+        return render(request, 'travel/search_travels.html',
+                      {'searched': searched, 'travels': travels})
+    else:
+        return render(request, 'travel/search_travels.html',
+                      {})
+
+
 
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
