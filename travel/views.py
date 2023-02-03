@@ -14,6 +14,7 @@ from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 # import pagination stuff
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 # Create your views here.
 
@@ -114,8 +115,13 @@ def delete_venue(request, venue_id):
 
 def delete_travel(request, travel_id):
     travel = Travel.objects.get(pk=travel_id)
-    travel.delete()
-    return redirect('list-travels')
+    if request.user == travel.manager:
+        travel.delete()
+        messages.success(request, ('Travel Deleted!'))
+        return redirect('list-travels')
+    else:
+        messages.success(request, ('You Are Not Authorized To Delete This Travel!'))
+        return redirect('list-travels')
 
 
 def add_travel(request):
@@ -151,7 +157,7 @@ def update_travel(request, travel_id):
         form = TravelFormAdmin(request.POST or None, instance=travel)
     else:
         form = TravelForm(request.POST or None, instance=travel)
-        
+
     if form.is_valid():
         form.save()
         return redirect('list-travels')
