@@ -234,7 +234,7 @@ def list_venues(request):
 def add_venue(request):
     submitted = False
     if request.method == 'POST':
-        form = VenueForm(request.POST)
+        form = VenueForm(request.POST, request.FILES)
         if form.is_valid():
             venue = form.save(commit=False)
             venue.owner = request.user.id
