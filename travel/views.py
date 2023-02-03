@@ -20,8 +20,18 @@ from django.contrib import messages
 
 # Create your views here.
 
-# Generate PDF File Venue List
+# Create My Travels Page
+def my_travels(request):
+    if request.user.is_authenticated:
+        me = request.user.id
+        travels = Travel.objects.filter(attendees=me)
+        return render(request, 'travel/my_travels.html', {'travels': travels})
+    
+    else:
+        messages.success(request, ('You are not Authorized To View This Page'))
+        return redirect('home')
 
+# Generate PDF File Venue List
 
 def venue_pdf(request):
     # Create bytestream buffer

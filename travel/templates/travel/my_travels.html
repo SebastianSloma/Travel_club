@@ -1,0 +1,60 @@
+{% extends 'travel/base.html' %}
+
+{% block content %}
+	
+	<h2>My Travels</h2>
+	<br/>
+
+	{% for travel in travels %}
+
+		<div class="card">
+  <div class="card-header">
+    {{ travel }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Venue: {{ travel.venue }}</h5>
+    <p class="card-text">
+    	<ul>
+<li>Date: {{ travel.travel_date }}</li>
+
+<li>Venue Website: {{ travel.venue.web }}</li>
+<li>Manager: {{ travel.manager }}</li>
+<li>Description: {{ travel.description }}</li>
+	<li>Attendees:<br/>
+	{% for user in travel.attendees.all %}
+{{ user }}<br/>
+	{% endfor %}
+	</li>
+	</ul>
+
+
+
+    </p>
+  </div>
+  {% if user.is_authenticated %}
+    {% if user == travel.manager %}
+      <div class="card-footer text-muted">
+        
+        <a href="{% url 'update-travel' travel.id %}" class="btn btn-outline-secondary btn-sm">Update Travel</a>
+
+        <a href="{% url 'delete-travel' travel.id %}" class="btn btn-outline-danger btn-sm">Delete Travel</a>
+        
+      </div>
+    {% endif %}  
+  {% endif %}
+</div>
+
+
+
+
+
+	<br/><br/>
+
+
+		
+	{% endfor %}
+
+	
+
+
+{% endblock %}
