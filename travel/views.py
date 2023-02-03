@@ -270,6 +270,14 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
     now = datetime.now()
     current_year = now.year
 
+    # Query the travels model for dates
+    travel_list = Travel.objects.filter(
+        travel_date__year = year,
+        travel_date__month = month_number
+
+    )
+
+
     time = now.strftime('%I:%M:%S %p')
     return render(request, 'travel/home.html', {
         'name': name,
@@ -279,4 +287,5 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
         'cal': cal,
         'current_year': current_year,
         'time': time,
+        'travel_list': travel_list,
     })

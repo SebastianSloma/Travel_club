@@ -3,10 +3,51 @@
 {% block content %}
     <h1>heloo {{ name }}</h1>
     {{ cal|safe }}
+    <br><br>
+    <h3>Travels This Month...</h3>
+
+    {% if travel_list %}
+        {% for travel in travel_list %}
+        <div class="card">
+            <div class="card-header">
+                <strong>{{ travel }}</strong>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Venue: {{ travel.venue }}</h5>
+              <p class="card-text">
+                <ul>
+                    <li>Date: {{ travel.travel_date }} </li>
+                    <li>Venue Website: {{ travel.venue.web }} </li>
+                    <li>Manager: {{ travel.manager }} </li>
+                    <li>Description {{ travel.description }} </li>
+                    <li>Attendees: 
+                    {% for user in travel.attendees.all %}
+                    {{ user }}
+                    {% endfor %}
+                </li>
+                </ul>
+              </p>
+            </div>
+            {% if user.is_authenticated %}
+              {% if user == travel.manager %}
+                <div class="card-footer text-muted">
+                  <a href="{% url 'update-travel' travel.id %}" class="btn btn-outline-secondary btn-sm">Update Travel</a>
+    
+                  <a href="{% url 'delete-travel' travel.id %}" class="btn btn-outline-danger btn-sm">Delete Travel</a>
+                </div>      
+              {% endif %}
+            {% endif %}
+          </div>
+          <br>
+            <br>
+        {% endfor %}
+    {% else %}
+    Sorry...There are no events this month...
+    {% endif %}
 
     <br><br><br>
-    copyright (c) {{ current_year }}
+    copyright (c) {{ current_year }} <br> {{ time }}
     <br><br><br>
-    {{ time }}
+    
 
 {% endblock %}
