@@ -23,6 +23,10 @@ from django.contrib import messages
 
 # Create Admin Travel Approval Page
 def admin_approval(request):
+    travel_count = Travel.objects.all().count()
+    venue_count = Venue.objects.all().count()
+    user_count = User.objects.all().count()
+
     travel_list = Travel.objects.all().order_by('-travel_date')
     if request.user.is_superuser:
         if request.method == 'POST':
@@ -33,12 +37,18 @@ def admin_approval(request):
             for x in id_list:
                 Travel.objects.filter(pk=int(x)).update(approved=True)
 
-            messages.success(request, ('Travel list approval has been updated!'))
+            messages.success(
+                request, ('Travel list approval has been updated!'))
             return redirect('list-travels')
         else:
-            return render(request, 'travel/admin_approval.html', {'travel_list': travel_list})
+            return render(request, 'travel/admin_approval.html', {
+                'travel_list': travel_list,
+                'travel_count': travel_count,
+                'venue_count': venue_count,
+                'user_count': user_count})
     else:
-        messages.success(request, ('You are not authorized to view this page!'))
+        messages.success(
+            request, ('You are not authorized to view this page!'))
         return redirect('home')
     return render(request, 'travel/admin_approval.html')
 
@@ -49,12 +59,13 @@ def my_travels(request):
         me = request.user.id
         travels = Travel.objects.filter(attendees=me)
         return render(request, 'travel/my_travels.html', {'travels': travels})
-    
+
     else:
         messages.success(request, ('You are not Authorized To View This Page'))
         return redirect('home')
 
 # Generate PDF File Venue List
+
 
 def venue_pdf(request):
     # Create bytestream buffer
@@ -203,7 +214,8 @@ def update_travel(request, travel_id):
 
 def update_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    form = VenueForm(request.POST or None, request.FILES or None, instance=venue)
+    form = VenueForm(request.POST or None,
+                     request.FILES or None, instance=venue)
     if form.is_valid():
         form.save()
         return redirect('list-venues')
@@ -222,6 +234,7 @@ def search_venues(request):
         return render(request, 'travel/search_venues.html',
                       {})
 
+
 def search_travels(request):
     if request.method == 'POST':
         searched = request.POST['searched']
@@ -232,7 +245,6 @@ def search_travels(request):
     else:
         return render(request, 'travel/search_travels.html',
                       {})
-
 
 
 def show_venue(request, venue_id):
@@ -295,11 +307,10 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
 
     # Query the travels model for dates
     travel_list = Travel.objects.filter(
-        travel_date__year = year,
-        travel_date__month = month_number
+        travel_date__year=year,
+        travel_date__month=month_number
 
     )
-
 
     time = now.strftime('%I:%M:%S %p')
     return render(request, 'travel/home.html', {
