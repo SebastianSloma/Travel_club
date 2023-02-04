@@ -2,11 +2,15 @@ from django.contrib import admin
 from .models import Venue
 from .models import TravelUser
 from .models import Travel
+from django.contrib.auth.models import Group
 
 # Register your models here.
 
 # admin.site.register(Venue)
 admin.site.register(TravelUser)
+
+# remove groups
+admin.site.unregister(Group)
 # admin.site.register(Travel)
 
 
