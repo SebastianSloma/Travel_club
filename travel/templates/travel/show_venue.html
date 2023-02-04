@@ -25,6 +25,15 @@
         {% endif %}
     </ul>  
       </p>
+      <br>
+      <h3>Travels at this venue...</h3>
+      {% if travels %}
+      {% for travel in travels %}
+      <a href="{% url 'show-travel' travel.id %}">{{ travel }}</a> <br>
+      {% endfor %}
+      {% else %}
+      No travels scheduled at this time...
+      {% endif %}
     </div>
   </div>
   <br>

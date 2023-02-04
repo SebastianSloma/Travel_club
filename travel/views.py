@@ -272,7 +272,9 @@ def search_travels(request):
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     venue_owner = User.objects.get(pk=venue.owner)
-    return render(request, 'travel/show_venue.html', {'venue': venue, 'venue_owner': venue_owner})
+    travels = venue.travel_set.all()
+    return render(request, 'travel/show_venue.html',
+                  {'venue': venue, 'venue_owner': venue_owner, 'travels': travels})
 
 
 def list_venues(request):
