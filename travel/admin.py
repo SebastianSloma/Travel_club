@@ -23,7 +23,7 @@ class VenueAdmin(admin.ModelAdmin):
 
 @admin.register(Travel)
 class TravelAdmin(admin.ModelAdmin):
-    fields = (('name', 'venue'), 'travel_date', 'description', 'manager')
+    fields = (('name', 'venue'), 'travel_date', 'description', 'manager', 'approved')
     list_display = ('name', 'travel_date', 'venue')
     list_filter = ('travel_date', 'venue')
     ordering = ('travel_date',)
