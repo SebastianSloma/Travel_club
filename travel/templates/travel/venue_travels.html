@@ -1,0 +1,13 @@
+{% extends 'travel/base.html' %} 
+
+{% block content %}
+
+<h1>List Travels</h1>
+
+{% for travel in travels %}
+<a href="{% url 'show-travel' travel.id %}">{{ travel }}</a> <br>
+
+{% endfor %}
+
+
+{% endblock %}

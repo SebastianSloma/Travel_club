@@ -20,9 +20,29 @@ from django.contrib import messages
 
 # Create your views here.
 
+# Show travels
+
+
+def show_travel(request, travel_id):
+    travel = Travel.objects.get(pk=travel_id)
+    return render(request, 'travel/show_travel.html', {'travel': travel})
+
+
+# Show travels in a venue
+def venue_travels(request, venue_id):
+    venue = Venue.objects.get(id=venue_id)
+    travels = venue.travel_set.all()
+    if travels:
+        return render(request, 'travel/venue_travels.html', {'travels': travels})
+
+    else:
+        messages.success(request, ("That Venue Has No Events At This Time..."))
+        return redirect('admin_approval')
+
 
 # Create Admin Travel Approval Page
 def admin_approval(request):
+    venue_list = Venue.objects.all()
     travel_count = Travel.objects.all().count()
     venue_count = Venue.objects.all().count()
     user_count = User.objects.all().count()
@@ -45,11 +65,13 @@ def admin_approval(request):
                 'travel_list': travel_list,
                 'travel_count': travel_count,
                 'venue_count': venue_count,
-                'user_count': user_count})
+                'user_count': user_count,
+                'venue_list': venue_list})
     else:
         messages.success(
             request, ('You are not authorized to view this page!'))
         return redirect('home')
+
     return render(request, 'travel/admin_approval.html')
 
 
