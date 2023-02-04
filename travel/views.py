@@ -251,7 +251,7 @@ def add_venue(request):
 
 
 def all_travels(request):
-    travel_list = Travel.objects.all().order_by('travel_date')
+    travel_list = Travel.objects.all().order_by('-travel_date')
     return render(request, 'travel/travel_list.html', {
         'travel_list': travel_list
     })
