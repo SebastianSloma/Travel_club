@@ -20,6 +20,29 @@ from django.contrib import messages
 
 # Create your views here.
 
+
+# Create Admin Travel Approval Page
+def admin_approval(request):
+    travel_list = Travel.objects.all().order_by('-travel_date')
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            id_list = request.POST.getlist('boxes')
+            # ucheck all travels
+            travel_list.update(approved=False)
+            # update database
+            for x in id_list:
+                Travel.objects.filter(pk=int(x)).update(approved=True)
+
+            messages.success(request, ('Travel list approval has been updated!'))
+            return redirect('list-travels')
+        else:
+            return render(request, 'travel/admin_approval.html', {'travel_list': travel_list})
+    else:
+        messages.success(request, ('You are not authorized to view this page!'))
+        return redirect('home')
+    return render(request, 'travel/admin_approval.html')
+
+
 # Create My Travels Page
 def my_travels(request):
     if request.user.is_authenticated:
