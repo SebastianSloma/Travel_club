@@ -9,10 +9,10 @@
 	{% csrf_token %} 
     {{ form.as_p }}
 	<br />
-	<input type="submit" value="Update" class="btn btn-secondary" />
+	<input type="submit" value="Update" class="btn btn-secondary mb-3" />
+    <a href="{% url 'list-travels' %} " class="btn btn-outline-danger mb-3">Cancel</a>
 </form>
-
-    {% else %}
+{% else %}
 <h2>Access Denided</h2>
 <p>Only the travel's Manager can update this event...</p>
 Logged In User : {{ user }}

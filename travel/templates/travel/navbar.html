@@ -45,30 +45,37 @@
               <li><a class="dropdown-item" href="{% url 'venue_pdf' %}">Venue PDF File</a></li>
             </ul>
           </li>
+          
           {% if user.is_authenticated %}
           {% if user.is_superuser %}
               
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin_approval' %}">Admin</a>
               </li>
+            </ul>
               {% endif %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">{{ user }}</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'register_user' %}">Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
-          </li>
-          {% endif %}
+              <ul class="navbar-nav navbar-right">
+              <li class="nav-item" >
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#">{{ user }}</a>
+                </li>
+              
+                {% else %}
+             
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'register_user' %}">Register</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                
+                {% endif %}
+              </ul>
           
+              
        
-        </ul>
         <form class="d-flex" role="search" method=POST action="{% url 'search-venues' %}">
           {% csrf_token %}
           <input class="form-control me-2 bg-dark" type="search" placeholder="Search Venues" aria-label="Search" name="searched">

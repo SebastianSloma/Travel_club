@@ -2,7 +2,7 @@
 {% block content %}
 
 <h1>Admin Dashboard</h1>
-<br /><br />
+<hr/>
 
 <form action="" method="post">
     {% csrf_token %}
@@ -76,7 +76,8 @@
 	</tbody>
 </table>
 <br>
-<button class="btn btn-secondary" type="submit">Update Approval</button>
+<button class="btn btn-secondary mb-3" type="submit">Update Approval</button>
+<a href="{% url 'home' %} " class="btn btn-outline-secondary mb-3">Back to home</a>
 
 
 {% endblock %}
