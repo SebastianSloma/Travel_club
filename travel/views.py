@@ -311,8 +311,13 @@ def add_venue(request):
 
 def all_travels(request):
     travel_list = Travel.objects.all().order_by('-travel_date')
+    # Set up Pagination
+    p = Paginator(Venue.objects.all(), 8)
+    page = request.GET.get('page')
+    travels = p.get_page(page)
+    nums = 'a' * travels.paginator.num_pages
     return render(request, 'travel/travel_list.html', {
-        'travel_list': travel_list
+        'travel_list': travel_list, 'travels': travels, 'nums': nums
     })
 
 
