@@ -2,14 +2,31 @@
 
 {% block content %}
 
+<div class="container text-center">
+  <div class="row">
+    <div class="col">
+      <h1>Hello {{ user }} !!!</h1>
+  <hr>
+  <div style="display: flex; justify-content: center;">{{ cal|safe }}</div>
+  <br>
+  <p>{{ time }}</p>
+  <br><br>
+    </div>
+    <div class="col">
+      <img src="https://poradniksukces.com/wp/wp-content/uploads/2016/05/Travel-suitcase.jpg" width="500" alt="Suitcase on the map of the wolrd">
+    </div>
+    
+  </div>
+</div>
 
-    <h1>Hello {{ user }} !!!</h1>
+<div>
+  
+</div>
     <hr>
-    {{ cal|safe }}
-    <br>
-    {{ time }}
-    <br><br>
     <h3>Travels This Month...</h3>
+
+
+
 
     {% if travel_list %}
         {% for travel in travel_list %}
