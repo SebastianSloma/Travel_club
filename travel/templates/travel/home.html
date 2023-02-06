@@ -20,7 +20,13 @@
 </div>
 
 <div>
-  
+  {% if user.is_authenticated %}
+  {% else %}
+  <div style="display: flex; justify-content: center;">
+    <a class="btn btn-secondary m-2" href="{% url 'register_user' %}">Register</a>
+    <a class="btn btn-outline-secondary m-2" href="{% url 'login' %}">Login</a>
+  </div>
+  {% endif %}
 </div>
     <hr>
     <h3>Travels This Month...</h3>
