@@ -6,6 +6,7 @@ Simple service with travels for friends
 - register and login user
 - add, edit, delete travels
 - add, edit, delete venues
+- download list of venues in txt, csv and pdf
 
 ## Tech Stack
 - Python
